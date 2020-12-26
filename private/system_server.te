@@ -1129,6 +1129,11 @@ allow system_server staged_install_file:file create_file_perms;
 # Allow init to set sysprop used to compute stats about userspace reboot.
 set_prop(system_server, userspace_reboot_log_prop)
 
+# Pocket judge
+allow system_server pocket_service:service_manager { add find };
+allow system_server pocket_judge_sysfs:dir search;
+allow system_server pocket_judge_sysfs:file rw_file_perms;
+
 # JVMTI agent settings are only readable from the system server.
 neverallow {
   domain
@@ -1181,3 +1186,4 @@ neverallow { domain -init -system_server } socket_hook_prop:property_service set
 # BINDER_GET_FROZEN_INFO is used by system_server to determine the state of a frozen binder
 # interface
 neverallowxperm { domain -system_server } binder_device:chr_file ioctl { BINDER_FREEZE BINDER_GET_FROZEN_INFO };
+
